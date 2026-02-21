@@ -9,63 +9,47 @@ const ProductCard = ({ product, onDelete }) => {
         : null;
 
     return (
-        <div className="glass-panel" style={{ padding: '0', transition: 'transform 0.2s', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div className="bg-slate-800/70 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-lg p-0 transition-transform relative overflow-hidden flex flex-col">
 
-            <div style={{ height: '200px', background: 'rgba(0,0,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <div className="h-[200px] bg-black/20 flex items-center justify-center relative">
                 {imageUrl ? (
-                    <img src={imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={imageUrl} alt={product.name} className="w-full h-full object-cover" />
                 ) : (
-                    <FaBox size={48} color="var(--text-secondary)" style={{ opacity: 0.5 }} />
+                    <FaBox size={48} className="text-slate-400 opacity-50" />
                 )}
 
-                <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.5rem' }}>
-                    <button onClick={(e) => { e.stopPropagation(); navigate(`/edit/${product._id}`); }} style={{ color: '#fbbf24', padding: '0.5rem', background: 'rgba(0,0,0,0.6)', borderRadius: '50%', backdropFilter: 'blur(4px)' }}>
+                <div className="absolute top-4 right-4 flex gap-2">
+                    <button onClick={(e) => { e.stopPropagation(); navigate(`/edit/${product._id}`); }} className="text-amber-400 p-2 bg-black/60 rounded-full backdrop-blur-sm">
                         <FaEdit />
                     </button>
-                    <button onClick={(e) => { e.stopPropagation(); onDelete(product._id); }} style={{ color: '#ef4444', padding: '0.5rem', background: 'rgba(0,0,0,0.6)', borderRadius: '50%', backdropFilter: 'blur(4px)' }}>
+                    <button onClick={(e) => { e.stopPropagation(); onDelete(product._id); }} className="text-red-500 p-2 bg-black/60 rounded-full backdrop-blur-sm">
                         <FaTrash />
                     </button>
                 </div>
             </div>
 
-            <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div style={{ marginBottom: '0.5rem' }}>
-                    <span style={{
-                        background: 'rgba(6, 182, 212, 0.2)',
-                        color: 'var(--accent)',
-                        padding: '0.25rem 0.75rem',
-                        borderRadius: '1rem',
-                        fontSize: '0.75rem',
-                        fontWeight: '600',
-                        textTransform: 'uppercase'
-                    }}>
+            <div className="p-6 flex-1 flex flex-col">
+                <div className="mb-2">
+                    <span className="bg-[--color-accent]/20 text-[--color-accent] px-3 py-1 rounded-full text-xs font-semibold uppercase">
                         {product.category}
                     </span>
                 </div>
 
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text-primary)' }}>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate(`/products/${product._id}`); }} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <h3 className="text-xl mb-2 font-semibold text-slate-50">
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate(`/products/${product._id}`); }} className="no-underline text-inherit">
                         {product.name}
                     </a>
                 </h3>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem', minHeight: '3rem', fontSize: '0.9rem', lineHeight: '1.5' }}>
-                    {/* Truncate description */}
+                <p className="text-slate-400 mb-4 min-h-[3rem] text-sm leading-relaxed">
                     {product.description?.length > 60 ? product.description.substring(0, 60) + '...' : (product.description || 'No description available')}
                 </p>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--primary)' }}>
+                <div className="flex justify-between items-center mt-auto">
+                    <span className="text-2xl font-bold text-[--color-primary]">
                         ${product.price ? product.price.toFixed(2) : '0.00'}
                     </span>
-                    <span style={{
-                        fontSize: '0.8rem',
-                        color: product.inStock ? '#10b981' : '#ef4444',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.25rem',
-                        fontWeight: '500'
-                    }}>
-                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: product.inStock ? '#10b981' : '#ef4444' }}></span>
+                    <span className={`text-xs flex items-center gap-1 font-medium ${product.inStock ? 'text-emerald-500' : 'text-red-500'}`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${product.inStock ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
                         {product.inStock ? 'In Stock' : 'Out of Stock'}
                     </span>
                 </div>

@@ -16,7 +16,7 @@ export async function createProduct(req, res, next) {
 
 export async function getAllProducts(req, res, next) {
   try {
-    const { search, category, sort, page = 1, limit = 10 } = req.query;
+    const { search, category, sort } = req.query;
 
     const query = {};
 
@@ -36,24 +36,11 @@ export async function getAllProducts(req, res, next) {
     if (sort === "price_desc") sortOptions = { price: -1 };
     if (sort === "name_asc") sortOptions = { name: 1 };
 
-    // Pagination
-    const skip = (Number(page) - 1) * Number(limit);
-
-    const products = await Product.find(query)
-      .sort(sortOptions)
-      .skip(skip)
-      .limit(Number(limit));
-
-    const total = await Product.countDocuments(query);
+    const products = await Product.find(query).sort(sortOptions);
 
     res.json({
       success: true,
-      products,
-      pagination: {
-        total,
-        page: Number(page),
-        pages: Math.ceil(total / Number(limit))
-      }
+      products
     });
   } catch (err) {
     next(err);

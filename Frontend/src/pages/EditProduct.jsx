@@ -48,15 +48,15 @@ const EditProduct = () => {
         }
     };
 
-    if (loading) return <div className="container">Loading...</div>;
+    if (loading) return <div className="max-w-7xl mx-auto px-4">Loading...</div>;
 
     return (
-        <div className="container">
+        <div className="max-w-7xl mx-auto px-4">
             <Navbar />
 
-            <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-                <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', fontWeight: '300' }}>
-                    Edit <span style={{ fontWeight: '700', color: 'var(--accent)' }}>Product</span>
+            <div className="max-w-2xl mx-auto">
+                <h2 className="text-3xl mb-6 font-light">
+                    Edit <span className="font-bold text-[--color-accent]">Product</span>
                 </h2>
 
                 {product && (

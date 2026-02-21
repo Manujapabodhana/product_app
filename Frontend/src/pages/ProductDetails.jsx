@@ -37,75 +37,61 @@ const ProductDetails = () => {
         }
     };
 
-    if (loading) return <div className="container" style={{ paddingTop: '2rem' }}>Loading...</div>;
+    if (loading) return <div className="max-w-7xl mx-auto px-4 pt-8">Loading...</div>;
     if (!product) return null;
 
     const imageUrl = product.image ? `http://localhost:8000${product.image}` : null;
 
     return (
-        <div className="container">
+        <div className="max-w-7xl mx-auto px-4">
             <Navbar />
 
-            <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--text-secondary)' }}>
+            <Link to="/" className="inline-flex items-center gap-2 mb-8 text-slate-400">
                 <FaArrowLeft /> Back to Products
             </Link>
 
-            <div className="glass-panel" style={{ padding: '0', overflow: 'hidden', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '0' }}>
+            <div className="bg-slate-800/70 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-lg p-0 overflow-hidden grid grid-cols-2 gap-0">
 
                 {/* Image Section */}
-                <div style={{ background: 'rgba(0,0,0,0.3)', minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="bg-black/30 min-h-[400px] flex items-center justify-center">
                     {imageUrl ? (
-                        <img src={imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img src={imageUrl} alt={product.name} className="w-full h-full object-cover" />
                     ) : (
-                        <FaBox size={100} color="var(--text-secondary)" style={{ opacity: 0.5 }} />
+                        <FaBox size={100} className="text-slate-400 opacity-50" />
                     )}
                 </div>
 
                 {/* Details Section */}
-                <div style={{ padding: '3rem', display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ marginBottom: '1rem' }}>
-                        <span style={{
-                            background: 'rgba(139, 92, 246, 0.2)',
-                            color: 'var(--primary)',
-                            padding: '0.5rem 1rem',
-                            borderRadius: '2rem',
-                            fontSize: '0.875rem',
-                            fontWeight: '600',
-                            textTransform: 'uppercase'
-                        }}>
+                <div className="p-12 flex flex-col">
+                    <div className="mb-4">
+                        <span className="bg-[--color-primary]/20 text-[--color-primary] px-4 py-2 rounded-full text-sm font-semibold uppercase">
                             {product.category}
                         </span>
                     </div>
 
-                    <h1 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1rem', lineHeight: 1.2 }}>{product.name}</h1>
+                    <h1 className="text-4xl font-bold mb-4 leading-tight">{product.name}</h1>
 
-                    <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--accent)', marginBottom: '2rem' }}>
+                    <div className="text-3xl font-bold text-[--color-accent] mb-8">
                         ${product.price.toFixed(2)}
                     </div>
 
-                    <div style={{ marginBottom: '2rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                        <h3 style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>Description</h3>
+                    <div className="mb-8 text-slate-400 leading-relaxed">
+                        <h3 className="text-base font-semibold text-slate-50 mb-2">Description</h3>
                         <p>{product.description || 'No description provided.'}</p>
                     </div>
 
-                    <div style={{ marginBottom: '2rem' }}>
-                        <span style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            color: product.inStock ? '#10b981' : '#ef4444',
-                            fontWeight: '600'
-                        }}>
-                            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: product.inStock ? '#10b981' : '#ef4444' }}></span>
+                    <div className="mb-8">
+                        <span className={`inline-flex items-center gap-2 font-semibold ${product.inStock ? 'text-emerald-500' : 'text-red-500'}`}>
+                            <span className={`w-2.5 h-2.5 rounded-full ${product.inStock ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
                             {product.inStock ? 'In Stock' : 'Currently Unavailable'}
                         </span>
                     </div>
 
-                    <div style={{ marginTop: 'auto', display: 'flex', gap: '1rem' }}>
-                        <Link to={`/edit/${product._id}`} className="btn-primary" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', color: 'white' }}>
+                    <div className="mt-auto flex gap-4">
+                        <Link to={`/edit/${product._id}`} className="flex-1 bg-gradient-to-br from-[--color-primary] to-[--color-primary-hover] text-white px-6 py-3 rounded-lg font-semibold transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_15px_-3px_rgba(139,92,246,0.3)] flex justify-center items-center gap-2">
                             <FaEdit /> Edit Product
                         </Link>
-                        <button onClick={handleDelete} className="btn-primary" style={{ flex: 1, background: '#ef4444', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
+                        <button onClick={handleDelete} className="flex-1 bg-red-500 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_15px_-3px_rgba(239,68,68,0.3)] flex justify-center items-center gap-2">
                             <FaTrash /> Delete
                         </button>
                     </div>

@@ -13,8 +13,6 @@ const Home = () => {
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('');
     const [sort, setSort] = useState('createdAt_desc');
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
 
     // Debounce search
     useEffect(() => {
@@ -22,7 +20,7 @@ const Home = () => {
             fetchProducts();
         }, 500);
         return () => clearTimeout(timer);
-    }, [search, category, sort, page]);
+    }, [search, category, sort]);
 
     const fetchProducts = async () => {
         setLoading(true);
@@ -30,12 +28,9 @@ const Home = () => {
             const { data } = await getProducts({
                 search,
                 category,
-                sort,
-                page,
-                limit: 8
+                sort
             });
             setProducts(data.products || []);
-            setTotalPages(data.pagination?.pages || 1);
             setError(null);
         } catch (err) {
             setError('Failed to fetch products. Check backend connection.');
@@ -57,26 +52,24 @@ const Home = () => {
     };
 
     return (
-        <div className="container">
+        <div className="max-w-7xl mx-auto px-4">
             <Navbar />
 
             {/* Controls */}
-            <div className="glass-panel" style={{ padding: '1rem', marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
-                <div style={{ flex: 1, minWidth: '200px', position: 'relative' }}>
-                    <FaSearch style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+            <div className="bg-slate-800/70 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-lg p-4 mb-8 flex flex-wrap gap-4 items-center">
+                <div className="flex-1 min-w-[200px] relative">
+                    <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
                         type="text"
                         placeholder="Search products..."
-                        className="form-input"
-                        style={{ paddingLeft: '2.5rem' }}
+                        className="w-full pl-10 pr-3 py-3 bg-slate-900/50 border border-slate-700/50 rounded-lg text-slate-50 transition-colors focus:outline-none focus:border-[--color-primary]"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
 
                 <select
-                    className="form-input"
-                    style={{ width: 'auto', minWidth: '150px' }}
+                    className="w-auto min-w-[150px] px-3 py-3 bg-slate-900/50 border border-slate-700/50 rounded-lg text-slate-50 transition-colors focus:outline-none focus:border-[--color-primary]"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                 >
@@ -89,8 +82,7 @@ const Home = () => {
                 </select>
 
                 <select
-                    className="form-input"
-                    style={{ width: 'auto', minWidth: '150px' }}
+                    className="w-auto min-w-[150px] px-3 py-3 bg-slate-900/50 border border-slate-700/50 rounded-lg text-slate-50 transition-colors focus:outline-none focus:border-[--color-primary]"
                     value={sort}
                     onChange={(e) => setSort(e.target.value)}
                 >
@@ -102,21 +94,16 @@ const Home = () => {
             </div>
 
             {loading && products.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
+                <div className="text-center py-16 text-slate-400">
                     Loading products...
                 </div>
             ) : error ? (
-                <div style={{ textAlign: 'center', padding: '4rem', color: '#ef4444' }}>
+                <div className="text-center py-16 text-red-500">
                     {error}
                 </div>
             ) : (
                 <>
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                        gap: '2rem',
-                        paddingBottom: '2rem'
-                    }}>
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-8 pb-8">
                         {products.map(product => (
                             <ProductCard
                                 key={product._id}
@@ -126,36 +113,11 @@ const Home = () => {
                         ))}
 
                         {products.length === 0 && (
-                            <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '4rem', background: 'rgba(255,255,255,0.05)', borderRadius: '1rem' }}>
+                            <div className="col-span-full text-center p-16 bg-white/5 rounded-2xl">
                                 <p>No products found matching your criteria.</p>
                             </div>
                         )}
                     </div>
-
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginBottom: '4rem' }}>
-                            <button
-                                className="btn-primary"
-                                disabled={page === 1}
-                                onClick={() => setPage(p => Math.max(1, p - 1))}
-                                style={{ opacity: page === 1 ? 0.5 : 1 }}
-                            >
-                                Previous
-                            </button>
-                            <span style={{ display: 'flex', alignItems: 'center', padding: '0 1rem', background: 'var(--bg-card)', borderRadius: '0.5rem' }}>
-                                Page {page} of {totalPages}
-                            </span>
-                            <button
-                                className="btn-primary"
-                                disabled={page === totalPages}
-                                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                                style={{ opacity: page === totalPages ? 0.5 : 1 }}
-                            >
-                                Next
-                            </button>
-                        </div>
-                    )}
                 </>
             )}
         </div>

@@ -5,7 +5,6 @@ import ProductForm from '../components/ProductForm';
 
 const AddProduct = () => {
     const navigate = useNavigate();
-
     const handleSubmit = async (data) => {
         try {
             // Create FormData object
@@ -28,12 +27,12 @@ const AddProduct = () => {
     };
 
     return (
-        <div className="container">
+        <div className="max-w-7xl mx-auto px-4">
             <Navbar />
 
-            <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-                <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', fontWeight: '300' }}>
-                    Add New <span style={{ fontWeight: '700', color: 'var(--primary)' }}>Product</span>
+            <div className="max-w-2xl mx-auto">
+                <h2 className="text-3xl mb-6 font-light">
+                    Add New <span className="font-bold text-[--color-primary]">Product</span>
                 </h2>
 
                 <ProductForm onSubmit={handleSubmit} />
